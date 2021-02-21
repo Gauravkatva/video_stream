@@ -76,7 +76,7 @@ class _LendingState extends State<Lending> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  color: Colors.indigoAccent,
+                  color: Colors.black,
                 ),
               ),
             ),

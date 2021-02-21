@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/settings.dart' as settings;
@@ -172,55 +173,201 @@ class _CallScreenState extends State<CallScreen> {
     return Container();
   }
 
+  List<Widget> _headerWidgets() {
+    Widget _closeButton = IconButton(
+      iconSize: 30,
+      color: Colors.white,
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      icon: Icon(Icons.cancel_rounded),
+    );
+    return [
+      Expanded(
+        child: Container(
+          width: 125,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage("assets/person1.jpg"),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 1,
+                    ),
+                    Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.yellow[800],
+                      size: 15,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.redAccent,
+                  child: IconButton(
+                    color: Colors.white,
+                    onPressed: () {},
+                    icon: Icon(Icons.add),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        width: 10,
+      ),
+      Expanded(
+        child: Row(
+          children: [
+            Container(
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/person2.jpg"),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/person3.jpg"),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/person4.jpg"),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 50,
+                margin: EdgeInsets.only(left: 15),
+              ),
+            ),
+          ],
+        ),
+      ),
+      _closeButton,
+    ];
+  }
+
+  List<Widget> _footerWidgets() {
+    Widget giftButton = Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.yellow[800],
+        child: IconButton(
+          color: Colors.grey[200],
+          onPressed: () {},
+          icon: Icon(Icons.card_giftcard),
+        ),
+      ),
+    );
+
+    Widget shareButton = Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.black.withOpacity(0.5),
+        child: IconButton(
+          color: Colors.white,
+          onPressed: () {},
+          icon: Icon(Icons.share),
+        ),
+      ),
+    );
+
+    Widget sendMail = Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.black.withOpacity(0.5),
+        child: IconButton(
+          color: Colors.white,
+          onPressed: () {},
+          icon: Icon(Icons.mail_outlined),
+        ),
+      ),
+    );
+
+    Widget chatTextField = Expanded(
+      child: Container(
+        height: 40,
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.message,
+              color: Colors.pink,
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // Widget shareButton =
+
+    // Returning the list
+    return [
+      chatTextField,
+      sendMail,
+      shareButton,
+      giftButton,
+    ];
+  }
+
   /// Toolbar layout
   Widget _toolbar() {
-    if (widget.role == ClientRole.Audience) return Container();
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: _headerWidgets(),
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          ),
-          RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
-            child: Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: _footerWidgets(),
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
+
+  List<String> fansList = [
+    "assets/person_image.jpg",
+    "assets/person4.jpg",
+    "assets/person5.jpg",
+  ];
 
   /// Info panel to show logs
   Widget _panel() {
@@ -232,8 +379,9 @@ class _CallScreenState extends State<CallScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: ListView.builder(
+            physics: BouncingScrollPhysics(),
             reverse: true,
-            itemCount: _infoStrings.length,
+            itemCount: fansList.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
                 return null;
@@ -244,24 +392,10 @@ class _CallScreenState extends State<CallScreen> {
                   horizontal: 10,
                 ),
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          _infoStrings[index],
-                          style: TextStyle(color: Colors.blueGrey),
-                        ),
-                      ),
-                    )
+                    CircleAvatar(
+                      backgroundImage: AssetImage(fansList[index]),
+                    ),
                   ],
                 ),
               );
@@ -272,27 +406,24 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
-  }
+  // void _onCallEnd(BuildContext context) {
+  //   Navigator.pop(context);
+  // }
 
-  void _onToggleMute() {
-    setState(() {
-      muted = !muted;
-    });
-    _engine.muteLocalAudioStream(muted);
-  }
+  // void _onToggleMute() {
+  //   setState(() {
+  //     muted = !muted;
+  //   });
+  //   _engine.muteLocalAudioStream(muted);
+  // }
 
-  void _onSwitchCamera() {
-    _engine.switchCamera();
-  }
+  // void _onSwitchCamera() {
+  //   _engine.switchCamera();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Agora Flutter QuickStart'),
-      ),
       backgroundColor: Colors.black,
       body: Center(
         child: Stack(
