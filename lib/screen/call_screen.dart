@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/settings.dart' as settings;
@@ -270,6 +269,50 @@ class _CallScreenState extends State<CallScreen> {
     ];
   }
 
+  List<String> socialMedia = [
+    "assets/s1.png",
+    "assets/sc2.png",
+    "assets/sc3.png",
+    "assets/sc4.png",
+    "assets/sc5.png",
+    "assets/sc6.png",
+  ];
+  void bottomSheet() {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 300,
+                child: GridView.builder(
+                  physics: BouncingScrollPhysics(),
+                  padding: EdgeInsets.all(10),
+                  scrollDirection: Axis.horizontal,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: socialMedia.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(70),
+                        ),
+                        child: Image.asset(socialMedia[index]),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   List<Widget> _footerWidgets() {
     Widget giftButton = Padding(
       padding: const EdgeInsets.all(5.0),
@@ -291,7 +334,9 @@ class _CallScreenState extends State<CallScreen> {
         backgroundColor: Colors.black.withOpacity(0.5),
         child: IconButton(
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            bottomSheet();
+          },
           icon: Icon(Icons.share),
         ),
       ),

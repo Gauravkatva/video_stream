@@ -64,7 +64,7 @@ class _LendingState extends State<Lending> {
               child: SizedBox(
                 width: 200,
                 child: FlatButton(
-                  splashColor: Colors.black,
+                  splashColor: Colors.white,
                   onPressed: () {
                     onJoin();
                   },
